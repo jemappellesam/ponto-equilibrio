@@ -9,10 +9,12 @@
   --radius:14px;
   --glass-2: rgba(255,255,255,0.02);
   --text:#e6eef8;
+  --header-height:72px; /* ajuste se necessário */
 }
 
+/* reset básico */
 *{box-sizing:border-box}
-html,body{height:100%}
+html,body{height:100%; width:100%; margin:0; padding:0}
 body{
   margin:0;
   font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
@@ -21,38 +23,69 @@ body{
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   padding-bottom:48px;
+  min-height:100vh;
 }
 
-/* container */
+/* container padrão (usado internamente) */
 .container{
   width:94%;
   max-width:1100px;
   margin:0 auto;
 }
 
-/* NEW HEADER */
+/* ========================= HEADER (FULL-WIDTH FIXED) =========================
+   Essa versão usa header POSITION: FIXED para garantir 100% da largura e ficar
+   acima de qualquer outro elemento. Se preferir header não fixo, altere:
+   - comente a regra `.new-topbar { position: fixed; ... }` e descomente a
+     alternativa dentro do bloco. */
+
+/* Header principal - FIXED (ativa por padrão) */
 .new-topbar {
+  position: fixed;              /* FIXED garante ficar sempre no topo e visível */
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  z-index: 9999;                /* muito alto para sobrepor elementos */
   background: linear-gradient(90deg, #2dd4bf 0%, #60a5fa 100%);
-  padding: 20px 0;
-  border: none;
-  box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 24px rgba(2,6,23,0.45);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
+/* Se preferir header NON-FIXED use este bloco (comente o bloco acima):
+.new-topbar {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(90deg, #2dd4bf 0%, #60a5fa 100%);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+}
+*/
+
+/* inner wrapper centralizado (mantém max-width) */
 .topbar-content {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: var(--header-height);
 }
 
+/* brand e logo */
 .brand {
   display: flex;
   align-items: center;
   gap: 14px;
 }
-
 .logo-circle {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(255,255,255,0.18);
   display: flex;
@@ -61,36 +94,97 @@ body{
   font-weight: 800;
   color: #ffffff;
   font-size: 1rem;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(3px);
+  box-shadow: 0 2px 8px rgba(2,6,23,0.2) inset;
 }
-
 .new-topbar h1 {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: 1.12rem;
   font-weight: 700;
   color: #ffffff;
+  letter-spacing: 0.1px;
 }
 
+/* header actions */
 .header-actions button {
-  margin-left: 8px;
+  margin-left: 10px;
 }
 
-/* layout */
+/* ========================= BOTÕES ========================= */
+
+.btn{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:12px;
+  border:0;
+  font-weight:600;
+  cursor:pointer;
+  background:transparent;
+  color:var(--text);
+  font-size:0.92rem;
+  transition: all 160ms ease;
+}
+
+/* Primário preservado */
+.btn.primary{
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:#032;
+  box-shadow:0 6px 18px rgba(8,189,148,0.07);
+}
+
+/* Secondary agora visível no header */
+.btn.secondary{
+  background: rgba(255,255,255,0.22);
+  border: 1px solid rgba(255,255,255,0.42);
+  color: #ffffff;
+  padding:8px 16px;
+}
+.btn.secondary:hover{
+  background: rgba(255,255,255,0.36);
+  border-color: #fff;
+}
+
+/* Ghost com borda clara */
+.btn.ghost{
+  background: rgba(255,255,255,0.08);
+  border: 1px dashed rgba(255,255,255,0.5);
+  color: #ffffff;
+  padding:8px 14px;
+}
+.btn.ghost:hover{
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.9);
+}
+
+/* ========================= MAIN LAYOUT ========================= */
+
+/* empurra o conteúdo para baixo do header FIXED */
+main, .main-grid, .container + main {
+  padding-top: calc(var(--header-height) + 12px); /* espaço seguro */
+}
+
+/* grid padrão do app */
 .main-grid{
   display:grid;
   grid-template-columns: 1fr 1.15fr;
   gap:20px;
   align-items:start;
+  margin: 16px auto 40px;
+  width:94%;
+  max-width:1100px;
 }
+
+/* cartão base */
 .card{
   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border-radius:var(--radius);
+  border-radius:14px;
   padding:18px;
   box-shadow: 0 6px 30px rgba(2,6,23,0.6);
   border: 1px solid rgba(255,255,255,0.02);
 }
 
-/* inputs card */
+/* ========================= INPUTS ========================= */
+
 .inputs-card h2{margin-top:0}
 .products-grid{
   display:grid;
@@ -103,7 +197,7 @@ body{
   gap:8px;
 }
 
-/* UPDATED INPUTS - CONTRASTE MELHORADO */
+/* Inputs visíveis */
 .product-row input,
 #fixed-costs {
   padding: 10px;
@@ -113,57 +207,17 @@ body{
   color: #fff;
   outline: none;
 }
-
 .product-row input:focus,
 #fixed-costs:focus {
   border-color: #6ee7b7;
   background: rgba(255,255,255,0.20);
 }
-
 .product-row .prod-name{padding-left:12px}
 .row{display:flex;align-items:center;gap:12px;margin-top:12px}
 .label-inline{min-width:140px;color:var(--muted)}
 
-/* buttons */
-.btn{
-  display:inline-block;
-  padding:8px 12px;
-  border-radius:10px;
-  border:0;
-  font-weight:600;
-  cursor:pointer;
-  background:transparent;
-  color:var(--text);
-}
-.btn.primary{
-  background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  color:#032;
-  box-shadow:0 6px 18px rgba(8,189,148,0.07);
-}
-.btn.secondary{
-  background: rgba(255,255,255,0.22);
-  border: 1px solid rgba(255,255,255,0.4);
-  color: #ffffff;
-  transition: 0.2s;
-}
-.btn.secondary:hover{
-  background: rgba(255,255,255,0.35);
-  border-color: #fff;
-}
-.btn.ghost{
-  opacity: 1;
-  border: 1px dashed rgba(255,255,255,0.5);
-  color: #ffffff;
-  background: rgba(255,255,255,0.10);
-  transition: 0.2s;
-}
+/* ========================= SUMMARY & TABLE ========================= */
 
-.btn.ghost:hover{
-  background: rgba(255,255,255,0.18);
-  border-color: rgba(255,255,255,0.8);
-}
-
-/* summary & table */
 .results-card h2{margin-top:0}
 .summary{
   display:flex;
@@ -181,7 +235,7 @@ body{
 .summary-item .label{color:var(--muted);font-size:0.85rem}
 .summary-item .value{font-weight:700;margin-top:6px;font-size:1.05rem}
 
-/* table */
+/* tabela */
 .table-wrap{overflow:auto;border-radius:10px}
 .table{width:100%;border-collapse:collapse;margin-top:10px}
 .table thead th{
@@ -198,7 +252,8 @@ body{
   font-size:0.95rem;
 }
 
-/* DRE */
+/* ========================= DRE ========================= */
+
 .dre{
   margin-top:12px;
   background:rgba(255,255,255,0.02);
@@ -211,19 +266,17 @@ body{
   padding:6px 0;
   border-bottom:1px solid rgba(255,255,255,0.02);
 }
-
-/* UPDATED RESULT COLOR - MAIOR VISIBILIDADE */
 .dre-row.result{
   font-weight:800;
-  color:#fbbf24; /* dourado */
+  color:#fbbf24;
   background:rgba(251,191,36,0.12);
   padding:8px;
   border-radius:6px;
 }
-
 .muted{color:var(--muted);font-size:0.9rem}
 
-/* footer */
+/* ========================= FOOTER ========================= */
+
 .footer{
   margin-top:28px;
   padding:18px 0;
@@ -231,9 +284,11 @@ body{
   color:var(--muted);
 }
 
-/* responsiveness */
+/* ========================= RESPONSIVE ========================= */
+
 @media (max-width:900px){
   .main-grid{grid-template-columns:1fr; padding-bottom:40px}
   .product-row{grid-template-columns:1fr 1fr}
-  .topbar .actions{float:none;margin-top:10px}
+  .topbar-content{padding:10px 16px}
+  :root{ --header-height:88px } /* espaço maior no mobile */
 }

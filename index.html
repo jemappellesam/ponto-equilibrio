@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ponto de Equilíbrio — Calculadora</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="topbar new-topbar">
+  <div class="container topbar-content">
+    <div class="brand">
+      <div class="logo-circle">EP</div>
+      <h1>EquilibrioPro — Calculadora Gerencial</h1>
+    </div>
+    <nav class="header-actions">
+      <button id="load-example" class="btn secondary">Carregar exemplo</button>
+      <button id="reset" class="btn ghost">Limpar</button>
+    </nav>
+  </div>
+</header>
+
+  <main class="container main-grid">
+    <section class="card inputs-card">
+      <h2>Entradas</h2>
+      <p class="muted">Insira os valores para até 5 produtos e o custo fixo mensal. Todos os valores monetários serão exibidos em R$.</p>
+
+      <form id="products-form" class="products-grid" onsubmit="return false;">
+        <!-- 5 produtos -->
+        <template id="product-row-template">
+          <div class="product-row">
+            <input type="text" class="prod-name" placeholder="Produto" />
+            <input type="number" class="cvu" placeholder="Custo variável (unit.)" min="0" step="0.01" />
+            <input type="number" class="price" placeholder="Preço venda (unit.)" min="0" step="0.01" />
+            <input type="number" class="qty" placeholder="Quantidade vendida" min="0" step="1" />
+          </div>
+        </template>
+      </form>
+
+      <div class="row">
+        <label class="label-inline">Custos Fixos (mês)</label>
+        <input id="fixed-costs" type="number" min="0" step="0.01" placeholder="0.00" />
+      </div>
+
+      <div class="row buttons-row">
+        <button id="calculate" class="btn primary">Calcular</button>
+        <button id="export-csv" class="btn ghost">Exportar CSV</button>
+      </div>
+    </section>
+
+    <section class="card results-card">
+      <h2>Resumo e DRE</h2>
+
+      <div class="summary">
+        <div class="summary-item">
+          <div class="label">Receita Total</div>
+          <div id="total-revenue" class="value">R$ 0,00</div>
+        </div>
+        <div class="summary-item">
+          <div class="label">Custo Variável Total</div>
+          <div id="total-variable" class="value">R$ 0,00</div>
+        </div>
+        <div class="summary-item">
+          <div class="label">Margem de Contribuição</div>
+          <div id="total-margin" class="value">R$ 0,00</div>
+        </div>
+        <div class="summary-item">
+          <div class="label">% Margem de Contribuição</div>
+          <div id="margin-percent" class="value">0,00 %</div>
+        </div>
+        <div class="summary-item">
+          <div class="label">Receita do Ponto de Equilíbrio</div>
+          <div id="break-even-revenue" class="value">R$ 0,00</div>
+        </div>
+      </div>
+
+      <h3>Tabela de Produtos</h3>
+      <div class="table-wrap">
+        <table id="products-table" class="table">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Qtde</th>
+              <th>Preço unit.</th>
+              <th>Receita</th>
+              <th>CV unit.</th>
+              <th>Custo Variável</th>
+              <th>Margem de Contrib.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- preenchido dinamicamente -->
+          </tbody>
+        </table>
+      </div>
+
+      <h3>DRE do Ponto de Equilíbrio</h3>
+      <div class="dre">
+        <div class="dre-row"><span>RECEITA (Ponto de Equilíbrio)</span><span id="dre-revenue">R$ 0,00</span></div>
+        <div class="dre-row"><span>(-) CUSTO VARIÁVEL</span><span id="dre-variable">R$ 0,00</span></div>
+        <div class="dre-row"><span>= MARGEM DE CONTRIBUIÇÃO</span><span id="dre-margin">R$ 0,00</span></div>
+        <div class="dre-row"><span>(-) CUSTOS FIXOS</span><span id="dre-fixed">R$ 0,00</span></div>
+        <div class="dre-row result"><span>= RESULTADO</span><span id="dre-result">R$ 0,00</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
